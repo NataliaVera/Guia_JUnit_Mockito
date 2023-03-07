@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 class CuentaTest {
 
@@ -77,6 +78,24 @@ class CuentaTest {
         String actual = exception.getMessage();
         String esperado = "Dinero insuficiente.";
         assertEquals(esperado, actual);
+    }
 
+    @Test
+    @DisplayName("Test saldo cuenta DEV ")
+    void testSaldoCuentaDev() {
+        //Solo se va a ejecutar cuando este en el ambiente desarrollo {
+        boolean isDev = "dev".equals(System.getProperty("ENV"));
+        assumeFalse(isDev);
+        assertEquals(1000.12345, cuenta.getSaldo().doubleValue());
+        assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0);
+        assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    @RepeatedTest(2) //Cantidad de veces que se va a repetir un test
+    void testDebitoCuenta2() {
+        cuenta.debito(new BigDecimal(100));
+        assertNotNull(cuenta.getSaldo());
+        assertEquals(900, cuenta.getSaldo().intValue());
+        assertEquals("900.12345", cuenta.getSaldo().toPlainString());
     }
 }

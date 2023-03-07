@@ -92,9 +92,7 @@ class BancoTest {
                         .stream()
                         .anyMatch(c -> c.getPersona().equals("Andres")))
         );
-
-
-        //o
-
     }
+
+
 }
