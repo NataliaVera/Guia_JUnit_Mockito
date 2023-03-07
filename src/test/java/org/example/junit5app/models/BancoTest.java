@@ -1,5 +1,7 @@
 package org.example.junit5app.models;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -7,6 +9,17 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BancoTest {
+
+    @BeforeAll // se ejecuta una vez durante el test
+    static void beforeAll(){
+        //static porque no esta asociado a la instancia
+        System.out.println("Inicializando el test");
+    }
+
+    @AfterAll
+    static void afterAll() { //Se usa para cerrar recursos
+        System.out.println("Finalizando el test");
+    }
 
     @Test
     void testTransferirDineroCuentas() {
