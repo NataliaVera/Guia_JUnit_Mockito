@@ -27,9 +27,61 @@ class BancoTest {
         Cuenta cuenta2 = new Cuenta("Andres", new BigDecimal("1500.236632"));
 
         Banco banco = new Banco();
+        banco.setNombre("Banco del estado");
         banco.addCuenta(cuenta);
         banco.addCuenta(cuenta2);
 
         assertEquals(2, banco.getCuentas().size());
+        assertEquals("Banco del estado", cuenta.getBanco().getNombre());
+        assertEquals("Andres", banco.getCuentas()
+                .stream()
+                .filter(c -> c.getPersona().equals("Andres"))
+                .findFirst()
+                .get()
+                .getPersona());
+        assertTrue(banco.getCuentas()
+                .stream()
+                .filter(c -> c.getPersona().equals("Andres"))
+                .findFirst()
+                .isPresent());
+        //o
+        assertTrue(banco.getCuentas()
+                .stream()
+                .anyMatch(c -> c.getPersona().equals("Andres")));
+    }
+
+    //Cunado se tienen muchos assert
+    @Test
+    void testRelacionBancoCuentasAssertAll() {
+        Cuenta cuenta = new Cuenta("Jhon Doe", new BigDecimal("2500"));
+        Cuenta cuenta2 = new Cuenta("Andres", new BigDecimal("1500.236632"));
+
+        Banco banco = new Banco();
+        banco.setNombre("Banco del estado");
+        banco.addCuenta(cuenta);
+        banco.addCuenta(cuenta2);
+
+        assertAll(
+                 () -> assertEquals(2, banco.getCuentas().size()),
+                () -> assertEquals("Banco del estado", cuenta.getBanco().getNombre()),
+                () -> assertEquals("Andres", banco.getCuentas()
+                        .stream()
+                        .filter(c -> c.getPersona().equals("Andres"))
+                        .findFirst()
+                        .get()
+                        .getPersona()),
+                () -> assertTrue(banco.getCuentas()
+                        .stream()
+                        .filter(c -> c.getPersona().equals("Andres"))
+                        .findFirst()
+                        .isPresent()),
+                () -> assertTrue(banco.getCuentas()
+                        .stream()
+                        .anyMatch(c -> c.getPersona().equals("Andres")))
+        );
+
+
+        //o
+
     }
 }
